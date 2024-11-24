@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.fitguide.databinding.FragmentExerciseDetailsBinding
+import com.example.fitguide.R
+import androidx.navigation.fragment.findNavController
 
 class ExerciseDetailsFragment : Fragment() {
     private var exerciseDetail: String? = null
@@ -25,7 +27,7 @@ class ExerciseDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise_details, container, false)
 
         val toolbar = binding.toolbar1
@@ -35,13 +37,10 @@ class ExerciseDetailsFragment : Fragment() {
             title = "Detalle de Ejercicio"
         }
 
-        // Configurar el listener para el botón de retroceso en la barra de herramientas
         toolbar.setNavigationOnClickListener {
-            // Regresar al fragmento anterior
-            fragmentManager?.beginTransaction()?.replace(R.id.nav_host_fragment, ExerciseListFragment.newInstance(exerciseType ?: ""))?.commit()
+            findNavController().navigateUp()
         }
 
-        // Cargar los datos del ejercicio según el nombre
         loadExerciseDetails()
 
         return binding.root
@@ -51,7 +50,7 @@ class ExerciseDetailsFragment : Fragment() {
         val exercise = ExerciseDetails.getExerciseDetails(exerciseDetail)
 
         exercise?.let {
-            binding.exercise = it // Establecemos el objeto ExerciseDetails en el binding
+            binding.exercise = it
         }
     }
 

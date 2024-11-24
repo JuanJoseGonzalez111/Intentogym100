@@ -44,6 +44,7 @@
                         android:padding="16dp">
 
                         <TextView
+                            android:id="@+id/abdominalesTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Abdominales"
@@ -80,6 +81,7 @@
                         android:padding="16dp">
 
                         <TextView
+                            android:id="@+id/espaldaTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Espalda"
@@ -116,6 +118,7 @@
                         android:padding="16dp">
 
                         <TextView
+                            android:id="@+id/hombrosTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hombros"
@@ -152,6 +155,7 @@
                         android:padding="16dp">
 
                         <TextView
+                            android:id="@+id/pechoTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Pecho"
@@ -188,6 +192,7 @@
                         android:padding="16dp">
 
                         <TextView
+                            android:id="@+id/piernasTextView"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Piernas"

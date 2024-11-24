@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.findNavController
+import androidx.databinding.DataBindingUtil
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,9 +60,10 @@ class ExerciseCategoriesFragment : Fragment() {
         fun setButtonListener(view: View, buttonId: Int, exerciseType: String) {
             val button = view.findViewById<Button>(buttonId)
             button.setOnClickListener {
-                val fragment = ExerciseListFragment.newInstance(exerciseType)
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.nav_host_fragment, fragment)?.commit()
+                val bundle = Bundle().apply {
+                    putString("exerciseType", exerciseType)
+                }
+                findNavController().navigate(R.id.action_exerciseCategoriesFragment_to_exerciseListFragment, bundle)
             }
         }
 
@@ -71,25 +74,5 @@ class ExerciseCategoriesFragment : Fragment() {
         setButtonListener(view, R.id.pechoButton, "pecho")
         setButtonListener(view, R.id.piernasButton, "piernas")
         return view
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ExerciseCategoriesFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ExerciseCategoriesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

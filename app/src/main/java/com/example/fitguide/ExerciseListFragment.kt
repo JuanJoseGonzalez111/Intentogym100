@@ -10,6 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.fitguide.R
+import androidx.navigation.fragment.findNavController
+
 
 class ExerciseListFragment : Fragment() {
     private var exerciseType: String? = null
@@ -33,16 +36,25 @@ class ExerciseListFragment : Fragment() {
             title = getToolbarTitle(exerciseType)
         }
 
-        // Configurar el listener para el botón de retroceso en la barra de herramientas
         toolbar.setNavigationOnClickListener {
-            val fragment = ExerciseCategoriesFragment()
-            fragmentManager?.beginTransaction()?.replace(R.id.nav_host_fragment, fragment)?.commit()
+            findNavController().navigateUp()
         }
 
         loadExercises(view)
         setupButtonListeners(view)
 
         return view
+    }
+
+    private fun navigateToDetails(exerciseDetail: String) {
+        val bundle = Bundle().apply {
+            putString("exerciseDetail", exerciseDetail)
+            putString("exerciseType", exerciseType)
+        }
+        findNavController().navigate(
+            R.id.action_exerciseListFragment_to_exerciseDetailsFragment,
+            bundle
+        )
     }
 
     private fun getToolbarTitle(exerciseType: String?): String {
@@ -83,11 +95,6 @@ class ExerciseListFragment : Fragment() {
             4 -> R.id.detailButton4
             else -> throw IllegalArgumentException("Invalid index")
         }
-    }
-
-    private fun navigateToDetails(exerciseDetail: String) {
-        val fragment = ExerciseDetailsFragment.newInstance(exerciseDetail, exerciseType ?: "")
-        fragmentManager?.beginTransaction()?.replace(R.id.nav_host_fragment, fragment)?.commit()
     }
 
     private fun loadExercises(view: View) {
@@ -140,3 +147,4 @@ class ExerciseListFragment : Fragment() {
         }
     }
 }
+

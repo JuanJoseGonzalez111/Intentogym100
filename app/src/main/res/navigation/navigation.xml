@@ -8,13 +8,24 @@
     <fragment
         android:id="@+id/exerciseCategoriesFragment"
         android:name="com.example.fitguide.ExerciseCategoriesFragment"
-        android:label="Ejercicios" />
+        android:label="Ejercicios">
+        <action
+            android:id="@+id/action_exerciseCategoriesFragment_to_exerciseListFragment"
+            app:destination="@id/exerciseListFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/exerciseListFragment"
         android:name="com.example.fitguide.ExerciseListFragment"
-        android:label="Lista de Ejercicios" />
+        android:label="Lista de Ejercicios">
+        <action
+            android:id="@+id/action_exerciseListFragment_to_exerciseDetailsFragment"
+            app:destination="@id/exerciseDetailsFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/exerciseDetailsFragment"
         android:name="com.example.fitguide.ExerciseDetailsFragment"
         android:label="Detalles de Ejercicios" />
+
 </navigation>
