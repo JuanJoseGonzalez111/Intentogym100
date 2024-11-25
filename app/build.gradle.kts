@@ -38,7 +38,6 @@ android {
 
     buildFeatures{
         dataBinding = true
-        viewBinding = true
     }
 }
 
@@ -46,8 +45,6 @@ dependencies {
 
     implementation (libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.media3.database)
-
     ksp(libs.androidx.room.compiler)
     kapt(libs.androidx.room.compiler)
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
