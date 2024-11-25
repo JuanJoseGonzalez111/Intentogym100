@@ -5,6 +5,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.fitguide.db.DatabaseProvider
+import com.example.fitguide.db.ExerciseCategoryRepository
+import com.example.fitguide.db.ExerciseListRepository
+import com.example.fitguide.entities.ExerciseListData
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,5 +21,19 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // Obtener la instancia de la base de datos
+        val db = DatabaseProvider.getInstance(this)
+
+        // Inicializar CategoryRepository
+        val exerciseCategoryDao = db.exerciseCategoryDao()
+        val categoryRepository = ExerciseCategoryRepository(exerciseCategoryDao)
+        categoryRepository.insertDefaultCategoriesIfNeeded()
+
+        // Inicializar ExerciseListRepository
+        val exerciseListDao = db.exerciseListDao()
+        val exerciseListRepository = ExerciseListRepository(exerciseListDao)
+        exerciseListRepository.insertDefaultExercisesIfNeeded()
+
     }
 }

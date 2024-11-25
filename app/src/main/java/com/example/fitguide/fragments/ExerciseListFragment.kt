@@ -1,7 +1,6 @@
-package com.example.fitguide
+package com.example.fitguide.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,18 +9,25 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.example.fitguide.R
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-
+import com.example.fitguide.R
+import com.example.fitguide.daos.ExerciseListDao
+import com.example.fitguide.db.DatabaseProvider
 
 class ExerciseListFragment : Fragment() {
     private var exerciseType: String? = null
+    private lateinit var exerciseListDao: ExerciseListDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             exerciseType = it.getString("exerciseType")
         }
+
+        // Inicializar el DAO
+        val db = DatabaseProvider.getInstance(requireContext())
+        exerciseListDao = db.exerciseListDao()
     }
 
     override fun onCreateView(
@@ -40,21 +46,48 @@ class ExerciseListFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        loadExercises(view)
+        loadExercisesFromDatabase(view)
         setupButtonListeners(view)
 
         return view
     }
 
-    private fun navigateToDetails(exerciseDetail: String) {
-        val bundle = Bundle().apply {
-            putString("exerciseDetail", exerciseDetail)
-            putString("exerciseType", exerciseType)
+    private fun getCategoryId(exerciseType: String?): Int {
+        return when (exerciseType) {
+            "abdominales" -> 1
+            "espalda" -> 2
+            "hombros" -> 3
+            "pecho" -> 4
+            "piernas" -> 5
+            else -> 1
         }
-        findNavController().navigate(
-            R.id.action_exerciseListFragment_to_exerciseDetailsFragment,
-            bundle
-        )
+    }
+
+    private fun loadExercisesFromDatabase(view: View) {
+        val categoryId = getCategoryId(exerciseType)
+        val exercises = exerciseListDao.getExercisesByCategoryId(categoryId)
+
+        exercises.forEachIndexed { index, exercise ->
+            setText(view, getTextViewId(index), exercise.name)
+            setImage(view, getImageViewId(index), getImageResource(exercise.imageResId))
+        }
+    }
+
+    private fun setupButtonListeners(view: View) {
+        val categoryId = getCategoryId(exerciseType)
+        val exercises = exerciseListDao.getExercisesByCategoryId(categoryId)
+
+        exercises.forEachIndexed { index, exercise ->
+            val buttonId = getButtonId(index)
+            view.findViewById<Button>(buttonId).setOnClickListener {
+                navigateToDetails(exercise.imageResId)
+            }
+        }
+    }
+
+    private fun getImageResource(imageName: String): Int {
+        // Obtén el ID de recurso usando el nombre de la imagen almacenada en la base de datos.
+        return resources.getIdentifier(imageName, "drawable", requireContext().packageName)
     }
 
     private fun getToolbarTitle(exerciseType: String?): String {
@@ -68,22 +101,15 @@ class ExerciseListFragment : Fragment() {
         }
     }
 
-    private fun setupButtonListeners(view: View) {
-        val exerciseMap = when (exerciseType) {
-            "abdominales" -> listOf("crunch", "escalador", "giro_ruso", "puente", "plancha")
-            "espalda" -> listOf("dominadas", "peso_muerto", "remo_invertido", "remo_polea", "superman")
-            "hombros" -> listOf("elevaciones_frontales", "elevaciones_laterales", "press_barra", "press_mancuerna", "remo_vertical")
-            "pecho" -> listOf("apertura_mancuerna", "cruce_polea", "flexiones", "press_banca", "press_inclinado_mancuernas")
-            "piernas" -> listOf("extension_rodillas", "prensa_piernas", "sentadillas", "step_up", "zancadas")
-            else -> emptyList()
+    private fun navigateToDetails(exerciseDetail: String) {
+        val bundle = Bundle().apply {
+            putString("exerciseDetail", exerciseDetail)
+            putString("exerciseType", exerciseType)
         }
-
-        exerciseMap.forEachIndexed { index, exerciseDetail ->
-            val buttonId = getButtonId(index)
-            view.findViewById<Button>(buttonId).setOnClickListener {
-                navigateToDetails(exerciseDetail)
-            }
-        }
+        findNavController().navigate(
+            R.id.action_exerciseListFragment_to_exerciseDetailsFragment,
+            bundle
+        )
     }
 
     private fun getButtonId(index: Int): Int {
@@ -94,15 +120,6 @@ class ExerciseListFragment : Fragment() {
             3 -> R.id.detailButton3
             4 -> R.id.detailButton4
             else -> throw IllegalArgumentException("Invalid index")
-        }
-    }
-
-    private fun loadExercises(view: View) {
-        val exercises = Exercise.getExercisesByType(exerciseType)
-
-        for (i in exercises.indices) {
-            setText(view, getTextViewId(i), exercises[i].name)
-            setImage(view, getImageViewId(i), exercises[i].imageResId)
         }
     }
 
@@ -147,4 +164,3 @@ class ExerciseListFragment : Fragment() {
         }
     }
 }
-

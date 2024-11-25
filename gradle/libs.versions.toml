@@ -13,6 +13,7 @@ materialVersion = "1.11.0"
 navigationFragmentKtx = "2.8.2"
 navigationUiKtx = "2.8.2"
 roomVersion = "2.6.1"
+media3Database = "1.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -29,6 +30,7 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
 material-v1110 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+androidx-media3-database = { group = "androidx.media3", name = "media3-database", version.ref = "media3Database" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

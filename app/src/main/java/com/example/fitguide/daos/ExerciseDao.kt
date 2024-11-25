@@ -5,21 +5,26 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.example.fitguide.Exercise
-import com.example.fitguide.entities.ExerciseData
+import com.example.fitguide.entities.ExerciseCategoryData
 
 @Dao
-interface ExerciseDao {
+interface ExerciseCategoryDao {
 
-    @Query("SELECT * FROM exercisedata WHERE type = :exerciseType")
-    fun getByType(exerciseType: String): List<ExerciseData>
+    @Query("SELECT * FROM exerciseCategories")
+    fun getAll(): List<ExerciseCategoryData>
+
+    @Query("SELECT * FROM exerciseCategories WHERE id = :id")
+    fun find(id: Int): ExerciseCategoryData
 
     @Insert
-    fun insert(exerciseData: ExerciseData)
+    fun insert(exerciseData: ExerciseCategoryData)
+
+    @Insert
+    fun insertMany(vararg exerciseData: ExerciseCategoryData)
 
     @Update
-    fun updateExercise(exerciseData: ExerciseData)
+    fun updateExercise(exerciseData: ExerciseCategoryData)
 
     @Delete
-    fun deleteExercise(exerciseData: ExerciseData)
+    fun deleteExercise(exerciseData: ExerciseCategoryData)
 }

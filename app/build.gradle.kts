@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.example.fitguide"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.fitguide"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -38,6 +38,7 @@ android {
 
     buildFeatures{
         dataBinding = true
+        viewBinding = true
     }
 }
 
@@ -45,9 +46,14 @@ dependencies {
 
     implementation (libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.media3.database)
 
     ksp(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.compiler)
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    implementation ("androidx.startup:startup-runtime:1.1.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

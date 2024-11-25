@@ -1,4 +1,6 @@
-package com.example.fitguide
+package com.example.fitguide.dataclasses
+
+import com.example.fitguide.R
 
 data class ExerciseDetails(
     val title: String,

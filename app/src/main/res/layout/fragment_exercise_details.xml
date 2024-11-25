@@ -6,14 +6,14 @@
     <data>
         <variable
             name="exercise"
-            type="com.example.fitguide.ExerciseDetails" />
+            type="com.example.fitguide.dataclasses.ExerciseDetails" />
     </data>
 
     <FrameLayout
         android:id="@+id/detail_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ExerciseDetailsFragment">
+        tools:context=".fragments.ExerciseDetailsFragment">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar1"

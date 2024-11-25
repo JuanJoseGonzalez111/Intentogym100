@@ -1,15 +1,16 @@
-package com.example.fitguide
+package com.example.fitguide.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.example.fitguide.databinding.FragmentExerciseDetailsBinding
-import com.example.fitguide.R
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.fitguide.dataclasses.ExerciseDetails
+import com.example.fitguide.R
+import com.example.fitguide.databinding.FragmentExerciseDetailsBinding
 
 class ExerciseDetailsFragment : Fragment() {
     private var exerciseDetail: String? = null
@@ -28,7 +29,8 @@ class ExerciseDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_exercise_details, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_exercise_details, container, false)
 
         val toolbar = binding.toolbar1
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
@@ -64,4 +66,3 @@ class ExerciseDetailsFragment : Fragment() {
         }
     }
 }
-

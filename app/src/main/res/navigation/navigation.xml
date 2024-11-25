@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/exerciseCategoriesFragment"
-        android:name="com.example.fitguide.ExerciseCategoriesFragment"
+        android:name="com.example.fitguide.fragments.ExerciseCategoriesFragment"
         android:label="Ejercicios">
         <action
             android:id="@+id/action_exerciseCategoriesFragment_to_exerciseListFragment"
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/exerciseListFragment"
-        android:name="com.example.fitguide.ExerciseListFragment"
+        android:name="com.example.fitguide.fragments.ExerciseListFragment"
         android:label="Lista de Ejercicios">
         <action
             android:id="@+id/action_exerciseListFragment_to_exerciseDetailsFragment"
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/exerciseDetailsFragment"
-        android:name="com.example.fitguide.ExerciseDetailsFragment"
+        android:name="com.example.fitguide.fragments.ExerciseDetailsFragment"
         android:label="Detalles de Ejercicios" />
 
 </navigation>
