@@ -13,15 +13,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.fitguide.R
 import com.example.fitguide.db.DatabaseProvider
+import com.example.fitguide.entities.ExerciseCategoryData
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ExerciseCategoriesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ExerciseCategoriesFragment : Fragment() {
-    override fun onCreateView(
 
+    override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -34,66 +30,78 @@ class ExerciseCategoriesFragment : Fragment() {
         val db = DatabaseProvider.getInstance(requireContext())
         val exerciseCategoryDao = db.exerciseCategoryDao()
 
-        // Obtener todos los datos de las categorías
+        // Obtener todas las categorías de la base de datos
         val exerciseCategories = exerciseCategoryDao.getAll()
 
-        // Mapeo dinámico de los TextViews e ImageViews
+        // Método para asignar dinámicamente los datos a la vista
+        populateCategories(view, exerciseCategories)
+
+        return view
+    }
+
+    private fun populateCategories(view: View, categories: List<ExerciseCategoryData>) {
         val textViewMap = mapOf(
-            "Abdominales" to R.id.abdominalesTextView,
-            "Espalda" to R.id.espaldaTextView,
-            "Hombros" to R.id.hombrosTextView,
-            "Pecho" to R.id.pechoTextView,
-            "Piernas" to R.id.piernasTextView
+            R.id.abdominalesTextView to "Abdominales",
+            R.id.espaldaTextView to "Espalda",
+            R.id.hombrosTextView to "Hombros",
+            R.id.pechoTextView to "Pecho",
+            R.id.piernasTextView to "Piernas"
         )
 
         val imageViewMap = mapOf(
-            "Abdominales" to R.id.abdominalesImageView,
-            "Espalda" to R.id.espaldaImageView,
-            "Hombros" to R.id.hombrosImageView,
-            "Pecho" to R.id.pechoImageView,
-            "Piernas" to R.id.piernasImageView
+            R.id.abdominalesImageView to "Abdominales",
+            R.id.espaldaImageView to "Espalda",
+            R.id.hombrosImageView to "Hombros",
+            R.id.pechoImageView to "Pecho",
+            R.id.piernasImageView to "Piernas"
         )
 
-        // Asignar los datos a los TextViews y ImageViews
-        exerciseCategories.forEach { category ->
-            // Verificar si el título de la categoría existe en los mapas
-            textViewMap[category.title]?.let { textViewId ->
+        // Asignar datos a los TextViews e ImageViews
+        categories.forEach { category ->
+            textViewMap.entries.find { it.value == category.title }?.key?.let { textViewId ->
                 view.findViewById<TextView>(textViewId).text = category.title
             }
 
-            imageViewMap[category.title]?.let { imageViewId ->
+            imageViewMap.entries.find { it.value == category.title }?.key?.let { imageViewId ->
                 view.findViewById<ImageView>(imageViewId)
                     .setImageResource(getImageResource(category.exerciseImage))
             }
         }
 
-        // Método para asignar el listener a los botones
-        fun setButtonListener(view: View, buttonId: Int, exerciseType: String) {
-            val button = view.findViewById<Button>(buttonId)
-            button.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putString("exerciseType", exerciseType)
-                }
-                findNavController().navigate(
-                    R.id.action_exerciseCategoriesFragment_to_exerciseListFragment,
-                    bundle
-                )
+        // Asignar listeners a los botones dinámicamente
+        categories.forEach { category ->
+            val buttonId = getButtonId(category.title)
+            buttonId?.let { id ->
+                setButtonListener(view, id, category.title.lowercase())
             }
         }
-
-        // Asignar el listener a los botones con el tipo de ejercicio correspondiente
-        setButtonListener(view, R.id.abdominalesButton, "abdominales")
-        setButtonListener(view, R.id.espaldaButton, "espalda")
-        setButtonListener(view, R.id.hombrosButton, "hombros")
-        setButtonListener(view, R.id.pechoButton, "pecho")
-        setButtonListener(view, R.id.piernasButton, "piernas")
-
-        return view
     }
 
-    // Función para obtener el recurso de la imagen según el nombre
+    private fun setButtonListener(view: View, buttonId: Int, exerciseType: String) {
+        val button = view.findViewById<Button>(buttonId)
+        button.setOnClickListener {
+            val bundle = Bundle().apply {
+                putString("exerciseType", exerciseType)
+            }
+            findNavController().navigate(
+                R.id.action_exerciseCategoriesFragment_to_exerciseListFragment,
+                bundle
+            )
+        }
+    }
+
     private fun getImageResource(imageName: String): Int {
-        // Usamos resources.getIdentifier para buscar el recurso por nombre
         return resources.getIdentifier(imageName, "drawable", requireContext().packageName)
+    }
+
+    private fun getButtonId(categoryTitle: String): Int? {
+        return when (categoryTitle) {
+            "Abdominales" -> R.id.abdominalesButton
+            "Espalda" -> R.id.espaldaButton
+            "Hombros" -> R.id.hombrosButton
+            "Pecho" -> R.id.pechoButton
+            "Piernas" -> R.id.piernasButton
+            else -> null
+        }
     }
 }

@@ -34,6 +34,5 @@ class MainActivity : AppCompatActivity() {
         val exerciseListDao = db.exerciseListDao()
         val exerciseListRepository = ExerciseListRepository(exerciseListDao)
         exerciseListRepository.insertDefaultExercisesIfNeeded()
-
     }
 }
